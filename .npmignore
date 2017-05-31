@@ -1,0 +1,9 @@
+node_modules/
+.idea/
+.DS_Store
+*.log
+src/
+demo/
+build/
+.editorconfig
+.gitignore
