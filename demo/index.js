@@ -31,7 +31,7 @@ class Editor extends Component {
   };
 
   onAdd = target => {
-    this.setState({ addAccept: true });
+    this.setState({ addAccept: !this.state.addAccept });
   };
 
   render() {

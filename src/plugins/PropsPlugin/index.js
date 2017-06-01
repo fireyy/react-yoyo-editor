@@ -6,14 +6,22 @@ export default function createPropsPlugin(yoyo, target) {
     return null;
   }
 
-  const propertyConnectors = Object.keys(yoyo.props).map(propName =>
-    cloneElement(yoyo.props[propName], {
-      key: `connector-${propName}`,
-      nodeKey: target.props.yoyoKey,
-      prop: propName,
-      value: target.props[propName]
-    })
-  );
+  const processProperty = (props, isStyle) => {
+    return Object.keys(props).map(propName => {
+      if (propName === "style") {
+        return processProperty(props[propName], true)
+      }
+      return cloneElement(props[propName], {
+        key: `connector-${propName}`,
+        nodeKey: target.props.yoyoKey,
+        prop: propName,
+        isStyle: isStyle,
+        value: (isStyle) ? (target.props.style && target.props.style[propName]) || '' : target.props[propName]
+      })
+    });
+  }
+
+  const propertyConnectors = processProperty(yoyo.props);
 
   return (
     <ToolbarSection key="props-plugin" label={`${yoyo.label} 配置属性`}>

@@ -52,8 +52,7 @@ export default function createEnhancer(yoyo) {
           _yoyoHasFocus: false,
           _yoyoHasPointerOver: false,
           _yoyoIsBeingDragged: false,
-          _yoyoIsBeingInspected: false,
-          _yoyoIsBeingAccepted: false
+          _yoyoIsBeingInspected: false
         };
 
         // Pass down `editorState` prop as context on mount
@@ -87,9 +86,6 @@ export default function createEnhancer(yoyo) {
         // Set state if current component being inspected
         this.setState({
           _yoyoIsBeingInspected: nextContext.yoyo.target === this
-        });
-        this.setState({
-          _yoyoIsBeingAccepted: nextContext.yoyo.addAccept
         });
       }
 
@@ -180,6 +176,7 @@ export default function createEnhancer(yoyo) {
             yoyoObj={yoyo}
             targetRef={this._childrenRef}
             visible={isVisible}
+            acceptVisible={this.context.yoyo.addAccept}
             canGoUp={isNotRoot}
             canDrag={isNotRoot}
             canRemove={isNotRoot}

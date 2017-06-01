@@ -1,11 +1,16 @@
 import React, { Component } from "react";
-import styled from 'styled-components';
-import { ToolbarDiv, ToolbarLayout, ToolbarLabel, ToolbarInput } from './ToolbarBase';
+import styled from "styled-components";
+import {
+  ToolbarDiv,
+  ToolbarLayout,
+  ToolbarLabel,
+  ToolbarInput
+} from "./ToolbarBase";
 import { connectProperty } from "utils/PropertyConnectorUtils";
 
 class ToolbarTextbox extends Component {
   render() {
-    const { label } = this.props;
+    const { label, type = "text" } = this.props;
 
     return (
       <ToolbarDiv>
@@ -13,7 +18,7 @@ class ToolbarTextbox extends Component {
           <ToolbarLabel>{label}</ToolbarLabel>
           <ToolbarInput
             id={this.id}
-            type="text"
+            type={type}
             onChange={this.props.onChange}
             value={this.props.value}
           />

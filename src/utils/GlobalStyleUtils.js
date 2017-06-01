@@ -65,3 +65,28 @@ export function destroyGlobalStyles() {
     document.head.removeChild(globalStylesRef);
   }
 }
+
+var styleKey = {
+  "backgroundImage": "url(%s)"
+};
+var pxArr = ['fontSize', 'padding'];
+
+export function processStyle(data) {
+  let styles = {}
+  if(data) {
+    Object.keys(data).map(key => {
+      let val = data[key]
+      // if(!val) continue;
+      if (val) {
+        if(key in styleKey) {
+          val = styleKey[key].replace("%s", val)
+        }
+        if(key in pxArr) {
+          val = val + "px"
+        }
+        styles[key] = val
+      }
+    })
+  }
+  return styles
+}

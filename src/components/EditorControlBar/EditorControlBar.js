@@ -79,7 +79,7 @@ const AcceptsUl = styled.ul`
   border-top: 0;
   background-color: ${theme.colors.background};
   visibility: ${props => props.visible ? 'visible' : 'hidden'};
-  pointer-events: none;
+  pointer-events: initial;
   position: absolute;
   top: 21px;
   right: 0;
@@ -92,23 +92,22 @@ const AcceptsUl = styled.ul`
   opacity: ${props => props.visible ? 1 : 0};
   ${props => props.visible && 'z-index: 9999;'};
   > li {
-    padding: 0 5px;
+    padding: 3px 5px;
+    font-size: 12px;
+    cursor: pointer;
+    &:hover {
+      background-color: rgba(0,0,0,0.2);
+    }
   }
 `;
 
 class ControlBar extends Component {
   static defaultProps = {
     visible: false,
+    acceptVisible: false,
     canDrag: true,
     canRemove: true
   };
-
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      acceptVisible: false
-    };
-  }
 
   onInspect = event => {
     this.preventFocusLoss(event);
@@ -122,10 +121,7 @@ class ControlBar extends Component {
 
   onAdd = event => {
     this.preventFocusLoss(event);
-    this.setState({
-      acceptVisible: !this.state.acceptVisible
-    });
-    // this.props.onAdd();
+    this.props.onAdd();
   };
 
   onRemove = event => {
@@ -143,7 +139,8 @@ class ControlBar extends Component {
   };
 
   renderLeftControls() {
-    const { canGoUp, onUp, label, parentLabel } = this.props;
+    const { canGoUp, onUp, label, parentLabel, acceptVisible } = this.props;
+    const canAdd = this.props.yoyoObj.accepts.length > 0;
 
     return (
       <ControlBarColumn align="left">
@@ -158,20 +155,20 @@ class ControlBar extends Component {
             </ControlButton>}
           <ControlButton
             roundedLeft={canGoUp}
-            roundedRight={true}
+            roundedRight={canAdd}
             onMouseDown={this.onInspect}
             key="inspectAction"
           >
             <MdSettings {...iconProps} /> {label}
           </ControlButton>
-          <ControlButton
+          {canAdd && <ControlButton
             roundedLeft={true}
             onMouseDown={this.onAdd}
             key="addAction"
           >
             <MdAdd {...iconProps} /> 添加
-          </ControlButton>
-          <AcceptsUl visible={this.state.acceptVisible}>
+          </ControlButton>}
+          {canAdd && <AcceptsUl visible={acceptVisible}>
             {this.props.yoyoObj.accepts.map(component => (
               <li
                 key={component._yoyo.label}
@@ -182,7 +179,7 @@ class ControlBar extends Component {
                 {component._yoyo.label}
               </li>
             ))}
-          </AcceptsUl>
+          </AcceptsUl>}
         </ControlPlaceholder>
       </ControlBarColumn>
     );

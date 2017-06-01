@@ -29,13 +29,17 @@ export function connectProperty(ComposedComponent) {
     onChange(event) {
       const newValue = event.target.value;
       const { yoyo } = this.context;
-      const { nodeKey, prop } = this.props;
+      const { nodeKey, prop, isStyle } = this.props;
       const path = getNodePath(yoyo.tree, nodeKey);
       const node = getNodeAtPath(yoyo.tree, path);
+      const propObj = {
+        [prop]: newValue
+      };
+      const props = isStyle ? {
+        style: propObj
+      } : propObj;
       const updatedNode = mergeNodes(node, {
-        props: {
-          [prop]: newValue
-        }
+        props: props
       });
 
       const newTree = updateNodeAtPath(yoyo.tree, path, updatedNode);
