@@ -52,9 +52,7 @@ const ControlButton = styled.button`
   text-transform: uppercase;
   display: block;
   pointer-events: initial;
-  border-style: solid;
-  border-width: 1px;
-  border-color: ${theme.colors.primary};
+  border: 1px solid ${theme.colors.primary};
   background-color: ${theme.colors.background};
   min-width: 22px;
   height: 22px;
@@ -76,12 +74,41 @@ const DragButton = styled(ControlButton)`
   text-align: center;
 `;
 
+const AcceptsUl = styled.ul`
+  border: 1px solid ${theme.colors.primary};
+  border-top: 0;
+  background-color: ${theme.colors.background};
+  visibility: ${props => props.visible ? 'visible' : 'hidden'};
+  pointer-events: none;
+  position: absolute;
+  top: 21px;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border;
+  list-style: none;
+  user-select: none;
+  border-radius: 0 0 2px 2px;
+  opacity: ${props => props.visible ? 1 : 0};
+  ${props => props.visible && 'z-index: 9999;'};
+  > li {
+    padding: 0 5px;
+  }
+`;
+
 class ControlBar extends Component {
   static defaultProps = {
     visible: false,
     canDrag: true,
     canRemove: true
   };
+
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      acceptVisible: false
+    };
+  }
 
   onInspect = event => {
     this.preventFocusLoss(event);
@@ -95,7 +122,10 @@ class ControlBar extends Component {
 
   onAdd = event => {
     this.preventFocusLoss(event);
-    this.props.onAdd();
+    this.setState({
+      acceptVisible: !this.state.acceptVisible
+    });
+    // this.props.onAdd();
   };
 
   onRemove = event => {
@@ -124,7 +154,7 @@ class ControlBar extends Component {
               onMouseDown={onUp}
               key="upAction"
             >
-              <MdArrowUpward {...iconProps} />{parentLabel}
+              <MdArrowUpward {...iconProps} /> {parentLabel}
             </ControlButton>}
           <ControlButton
             roundedLeft={canGoUp}
@@ -132,15 +162,27 @@ class ControlBar extends Component {
             onMouseDown={this.onInspect}
             key="inspectAction"
           >
-            <MdSettings {...iconProps} />{label}
+            <MdSettings {...iconProps} /> {label}
           </ControlButton>
           <ControlButton
             roundedLeft={true}
             onMouseDown={this.onAdd}
             key="addAction"
           >
-            <MdAdd {...iconProps} /> Add
+            <MdAdd {...iconProps} /> 添加
           </ControlButton>
+          <AcceptsUl visible={this.state.acceptVisible}>
+            {this.props.yoyoObj.accepts.map(component => (
+              <li
+                key={component._yoyo.label}
+                draggable={false}
+                onDragStart={() => {}}
+                onDragEnd={() => {}}
+              >
+                {component._yoyo.label}
+              </li>
+            ))}
+          </AcceptsUl>
         </ControlPlaceholder>
       </ControlBarColumn>
     );
@@ -156,7 +198,7 @@ class ControlBar extends Component {
             draggable
             key="dragAction"
           >
-            <MdOpenWith {...iconProps} size="18" />
+            <MdOpenWith {...iconProps} size="14" /> 移动
           </DragButton>
         </ControlPlaceholder>
       </ControlBarColumn>

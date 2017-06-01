@@ -7,7 +7,8 @@ export default {
     backgroundHover: "#f3f3f3"
   },
   border: {
-    width: 1
+    width: 1,
+    arrowSize: 5
   },
   icon: {
     color: "#aaa"

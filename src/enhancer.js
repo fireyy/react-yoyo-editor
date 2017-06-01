@@ -52,7 +52,8 @@ export default function createEnhancer(yoyo) {
           _yoyoHasFocus: false,
           _yoyoHasPointerOver: false,
           _yoyoIsBeingDragged: false,
-          _yoyoIsBeingInspected: false
+          _yoyoIsBeingInspected: false,
+          _yoyoIsBeingAccepted: false
         };
 
         // Pass down `editorState` prop as context on mount
@@ -86,6 +87,9 @@ export default function createEnhancer(yoyo) {
         // Set state if current component being inspected
         this.setState({
           _yoyoIsBeingInspected: nextContext.yoyo.target === this
+        });
+        this.setState({
+          _yoyoIsBeingAccepted: nextContext.yoyo.addAccept
         });
       }
 
@@ -173,6 +177,7 @@ export default function createEnhancer(yoyo) {
           <EditorControlBar
             label={yoyo.label}
             parentLabel={this.props.parentLabel}
+            yoyoObj={yoyo}
             targetRef={this._childrenRef}
             visible={isVisible}
             canGoUp={isNotRoot}
@@ -255,7 +260,7 @@ export default function createEnhancer(yoyo) {
       };
 
       onAdd = () => {
-        //
+        this.context.yoyo.onAdd(this);
       };
 
       onRemove = () => {

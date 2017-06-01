@@ -19,20 +19,19 @@ const EditorPlaceholderHr = styled.hr`
   border: none;
   padding: 0;
   margin: 0;
-  height: ${theme.border.width}
+  line-height: 0;
+  height: ${theme.border.width}px;
 `;
 
 const EditorPlaceholderArrow = styled.span`
-  border-style: solid;
-  border-color: rgba(66, 129, 244, 0);
-  border-width: ${theme.border.arrowSize};
+  border: ${theme.border.arrowSize}px solid rgba(66, 129, 244, 0);
   position: absolute;
-  margin-top: ${-1 * theme.border.arrowSize};
+  margin-top: ${-1 * theme.border.arrowSize}px;
   top: 50%;
   content: "";
   height: 0;
   width: 0;
-  ${props => (props.border === "left") ? "border-left-color: " + theme.colors.primary + "; left: 0;" : "border-right-color: " + theme.colors.primary + "; right: 0;"};
+  ${props => (props.border === "left") ? "border-left-color: " + theme.colors.primary + "; left: -10px;" : "border-right-color: " + theme.colors.primary + "; right: -10px;"};
 `;
 
 class EditorPlaceholder extends Component {
