@@ -1,4 +1,5 @@
 import StyleConstants from "constants/StyleConstants";
+import _ from 'lodash'
 
 // TODO: Move colors to constants
 export function buildGlobalStyles() {
@@ -66,27 +67,64 @@ export function destroyGlobalStyles() {
   }
 }
 
-var styleKey = {
-  "backgroundImage": "url(%s)"
-};
-var pxArr = ['fontSize', 'padding'];
+/**
+ * CSS properties that are valid unit-less numbers.
+ */
+const CSS_NUMBER = {
+  'animation-iteration-count': true,
+  'box-flex': true,
+  'box-flex-group': true,
+  'column-count': true,
+  'counter-increment': true,
+  'counter-reset': true,
+  'flex': true,
+  'flex-grow': true,
+  'flex-positive': true,
+  'flex-shrink': true,
+  'flex-negative': true,
+  'font-weight': true,
+  'line-clamp': true,
+  'line-height': true,
+  'opacity': true,
+  'order': true,
+  'orphans': true,
+  'tab-size': true,
+  'widows': true,
+  'z-index': true,
+  'zoom': true,
+  // SVG properties.
+  'fill-opacity': true,
+  'stroke-dashoffset': true,
+  'stroke-opacity': true,
+  'stroke-width': true
+}
 
-export function processStyle(data) {
-  let styles = {}
-  if(data) {
-    Object.keys(data).map(key => {
-      let val = data[key]
-      // if(!val) continue;
-      if (val) {
-        if(key in styleKey) {
-          val = styleKey[key].replace("%s", val)
-        }
-        if(key in pxArr) {
-          val = val + "px"
-        }
-        styles[key] = val
-      }
-    })
+function styleToString (key, value) {
+  if (/^(-?\d+)(\.\d+)?$/.test(value) && value !== 0 && !CSS_NUMBER[key]) {
+    value = `${value}px`
   }
-  return styles
+
+  return value
+}
+
+export function processStyle(properties) {
+  if (_.isEmpty(properties)) return
+
+  const result = {}
+
+  for (let name in properties) {
+    let value = properties[name]
+
+    if (value != null) {
+      if (Array.isArray(value)) {
+        value.forEach(function (value) {
+          value && (result[name] = styleToString(name, value))
+        })
+      } else {
+        result[name] = styleToString(name, value)
+      }
+    }
+  }
+
+  return result
 }
