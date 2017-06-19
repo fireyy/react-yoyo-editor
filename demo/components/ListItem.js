@@ -9,6 +9,7 @@ const ListItem = ({ children, style = {} }) => {
 };
 
 export default withYoYo({
+  name: "ListItem",
   label: "列表项",
   textEditable: true,
   props: {

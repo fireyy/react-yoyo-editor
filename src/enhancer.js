@@ -1,5 +1,6 @@
 import invariant from "invariant";
-import React, { PropTypes, cloneElement } from "react";
+import React, { cloneElement } from "react";
+import PropTypes from 'prop-types';
 import {
   unmountComponentAtNode,
   unstable_renderSubtreeIntoContainer as renderSubtreeIntoContainer
@@ -23,7 +24,8 @@ import {
   getNode,
   updateNodeAtPath,
   removeNodeAtPath,
-  mergeNodes
+  mergeNodes,
+  addChildToPath
 } from "./tree";
 
 export default function createEnhancer(yoyo) {
@@ -52,7 +54,8 @@ export default function createEnhancer(yoyo) {
           _yoyoHasFocus: false,
           _yoyoHasPointerOver: false,
           _yoyoIsBeingDragged: false,
-          _yoyoIsBeingInspected: false
+          _yoyoIsBeingInspected: false,
+          _yoyoAcceptIsVisible: false
         };
 
         // Pass down `editorState` prop as context on mount
@@ -164,6 +167,7 @@ export default function createEnhancer(yoyo) {
         }
 
         const isNotRoot = !this.state._yoyoIsRoot;
+        const acceptVisible = this.state._yoyoAcceptIsVisible;
         const isVisible =
           !this.context.yoyo.dragAndDrop &&
           (this.state._yoyoHasFocus || this.state._yoyoHasPointerOver);
@@ -176,13 +180,14 @@ export default function createEnhancer(yoyo) {
             yoyoObj={yoyo}
             targetRef={this._childrenRef}
             visible={isVisible}
-            acceptVisible={this.context.yoyo.addAccept}
+            acceptVisible={acceptVisible}
             canGoUp={isNotRoot}
             canDrag={isNotRoot}
             canRemove={isNotRoot}
             onUp={this.onParentFocus}
             onInspect={this.onInspect}
             onAdd={this.onAdd}
+            onShowAdd={this.onShowAdd}
             onRemove={this.onRemove}
             onDragStart={this.onDragStart}
           />,
@@ -256,8 +261,18 @@ export default function createEnhancer(yoyo) {
         this.setState({ _yoyoHasPointerOver: false });
       };
 
-      onAdd = () => {
-        this.context.yoyo.onAdd(this);
+      onAdd = (component) => {
+        this.setState({ _yoyoAcceptIsVisible: false });
+        const { tree, onChange } = this.context.yoyo;
+        const { yoyoKey } = this.props;
+
+        onChange(addChildToPath(tree, yoyoKey, component));
+      };
+
+      onShowAdd = (bool) => {
+        const _yoyoAcceptIsVisible = bool === undefined ? !this.state._yoyoAcceptIsVisible : bool;
+
+        this.setState({ _yoyoAcceptIsVisible: _yoyoAcceptIsVisible });
       };
 
       onRemove = () => {
@@ -283,7 +298,10 @@ export default function createEnhancer(yoyo) {
 
       onPointerOut = event => {
         event.stopPropagation();
-        this.setState({ _yoyoHasPointerOver: false });
+        this.setState({
+          _yoyoHasPointerOver: false,
+          _yoyoAcceptIsVisible: false
+        });
       };
 
       onFocus = event => {
@@ -297,7 +315,9 @@ export default function createEnhancer(yoyo) {
 
       onBlur = event => {
         event.stopPropagation();
-        this.setState({ _yoyoHasFocus: false });
+        this.setState({
+          _yoyoHasFocus: false
+        });
 
         if (this.props.onBlur) {
           this.props.onBlur();
@@ -384,8 +404,8 @@ export default function createEnhancer(yoyo) {
 
           // Bind common events
           Object.assign(extendedProps, {
-            onMouseOver: this.onPointerOver,
-            onMouseOut: this.onPointerOut,
+            // onMouseOver: this.onPointerOver,
+            // onMouseOut: this.onPointerOut,
             onFocus: this.onFocus,
             onBlur: this.onBlur,
             onMouseMove: this.onDragOver,
@@ -399,6 +419,7 @@ export default function createEnhancer(yoyo) {
               onPaste: this.onPaste,
               onKeyPress: this.onKeyPress,
               contentEditable: true,
+              placeholder: "请输入文字...",
               suppressContentEditableWarning: true,
               spellCheck: yoyo.spellCheck
             });

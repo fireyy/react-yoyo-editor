@@ -38,9 +38,7 @@ class EditorContainer extends Component {
       components,
       target,
       onChange,
-      onInspect,
-      onAdd,
-      addAccept
+      onInspect
     } = this.props;
     const renderedElement = deserialize(tree, components);
     const extraProps = {
@@ -49,9 +47,7 @@ class EditorContainer extends Component {
         tree,
         target,
         onChange,
-        onInspect,
-        onAdd,
-        addAccept
+        onInspect
       })
     };
 

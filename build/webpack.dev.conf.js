@@ -35,7 +35,7 @@ module.exports = {
     extensions: ["", ".js"]
   },
   plugins: [
-    new LodashModuleReplacementPlugin(),
+    // new LodashModuleReplacementPlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()

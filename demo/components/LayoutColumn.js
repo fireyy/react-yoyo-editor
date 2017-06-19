@@ -10,6 +10,7 @@ const LayoutColumn = ({ children }) => (
 );
 
 export default withYoYo({
+  name: "LayoutColumn",
   label: "列",
   accepts: [Heading, Paragraph, List]
 })(LayoutColumn);

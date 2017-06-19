@@ -248,3 +248,30 @@ export function moveNodeAtPath(
 
   return newTree;
 }
+
+/**
+ * Create new Node
+ */
+function createNewNode(data) {
+  return {
+    type: data.name,
+    props: {
+      isNew: true,
+      style: data.props.style,
+      children: ""
+    }
+  }
+}
+
+/**
+ * Add child to target Path
+ */
+export function addChildToPath(tree, key, component) {
+  const node = getNode(tree, key);
+  if (Array.isArray(node.props.children)) {
+    const child = createNewNode(component);
+    node.props.children.push(child);
+  }
+  const targetPath = getNodePath(tree, key);
+  return updateNodeAtPath(tree, targetPath, node);
+}

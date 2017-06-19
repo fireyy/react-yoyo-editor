@@ -14,6 +14,7 @@ const Article = ({ title, children }) => (
 );
 
 export default withYoYo({
+  name: "Article",
   label: "文章",
   accepts: [Heading, Paragraph, List, Layout],
   props: {

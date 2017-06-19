@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { getElementBox } from "utils/ElementBoxUtils";
 import ControlBarColumn from "./ControlBarColumn";
 import ControlPlaceholder from "./ControlPlaceholder";
+import AcceptsItems from "./AcceptsItems";
 import theme from "themes/index";
 import {
   MdAdd,
@@ -74,32 +75,6 @@ const DragButton = styled(ControlButton)`
   text-align: center;
 `;
 
-const AcceptsUl = styled.ul`
-  border: 1px solid ${theme.colors.primary};
-  border-top: 0;
-  background-color: ${theme.colors.background};
-  visibility: ${props => props.visible ? 'visible' : 'hidden'};
-  pointer-events: initial;
-  position: absolute;
-  top: 21px;
-  right: 0;
-  margin: 0;
-  padding: 0;
-  box-sizing: border;
-  list-style: none;
-  user-select: none;
-  border-radius: 0 0 2px 2px;
-  opacity: ${props => props.visible ? 1 : 0};
-  ${props => props.visible && 'z-index: 9999;'};
-  > li {
-    padding: 3px 5px;
-    font-size: 12px;
-    cursor: pointer;
-    &:hover {
-      background-color: rgba(0,0,0,0.2);
-    }
-  }
-`;
 
 class ControlBar extends Component {
   static defaultProps = {
@@ -119,9 +94,14 @@ class ControlBar extends Component {
     this.props.onDragStart();
   };
 
-  onAdd = event => {
+  onAdd = (event, component) => {
     this.preventFocusLoss(event);
-    this.props.onAdd();
+    this.props.onAdd(component);
+  };
+
+  onShowAdd = event => {
+    this.preventFocusLoss(event);
+    this.props.onShowAdd();
   };
 
   onRemove = event => {
@@ -163,23 +143,12 @@ class ControlBar extends Component {
           </ControlButton>
           {canAdd && <ControlButton
             roundedLeft={true}
-            onMouseDown={this.onAdd}
+            onMouseDown={this.onShowAdd}
             key="addAction"
           >
             <MdAdd {...iconProps} /> 添加
           </ControlButton>}
-          {canAdd && <AcceptsUl visible={acceptVisible}>
-            {this.props.yoyoObj.accepts.map(component => (
-              <li
-                key={component._yoyo.label}
-                draggable={false}
-                onDragStart={() => {}}
-                onDragEnd={() => {}}
-              >
-                {component._yoyo.label}
-              </li>
-            ))}
-          </AcceptsUl>}
+          {canAdd && <AcceptsItems visible={acceptVisible} data={this.props.yoyoObj.accepts} onAddClick={this.onAdd}></AcceptsItems>}
         </ControlPlaceholder>
       </ControlBarColumn>
     );

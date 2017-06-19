@@ -11,6 +11,7 @@ const Paragraph = ({ children, style = {} }) => {
 };
 
 export default withYoYo({
+  name: "Paragraph",
   label: "段落",
   textEditable: true,
   props: {

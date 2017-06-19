@@ -13,8 +13,7 @@ class Editor extends Component {
     this.state = {
       enabled: true,
       tree: initialTree,
-      target: null,
-      addAccept: false
+      target: null
     };
   }
 
@@ -30,10 +29,6 @@ class Editor extends Component {
     this.setState({ target });
   };
 
-  onAdd = target => {
-    this.setState({ addAccept: !this.state.addAccept });
-  };
-
   render() {
     return (
       <main className="yue">
@@ -41,8 +36,6 @@ class Editor extends Component {
         <YoYoEditor
           onChange={this.onChange}
           onInspect={this.onInspect}
-          onAdd={this.onAdd}
-          addAccept={this.state.addAccept}
           components={editorComponents}
           enabled={this.state.enabled}
           target={this.state.target}

@@ -11,6 +11,7 @@ const orderOptions = {
 };
 
 export default withYoYo({
+  name: "List",
   label: "列表",
   accepts: [ListItem],
   props: {

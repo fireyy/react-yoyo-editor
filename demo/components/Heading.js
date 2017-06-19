@@ -11,6 +11,7 @@ const options = {
 };
 
 export default withYoYo({
+  name: "Heading",
   label: "标题",
   textEditable: true,
   props: {
