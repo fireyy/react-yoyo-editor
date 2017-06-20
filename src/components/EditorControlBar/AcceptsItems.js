@@ -13,32 +13,33 @@ const AcceptsUl = styled.ul`
   right: 0;
   margin: 0;
   padding: 0;
-  box-sizing: border;
+  box-sizing: border-box;
   list-style: none;
   user-select: none;
   border-radius: 0 0 2px 2px;
   opacity: ${props => props.visible ? 1 : 0};
   ${props => props.visible && 'z-index: 9999;'};
-  > li {
-    padding: 3px 5px;
-    font-size: 12px;
-    cursor: pointer;
-    &:hover {
-      background-color: rgba(0,0,0,0.2);
-    }
-  }
 `;
+
+const AcceptsUlli = styled.li`
+  padding: 3px 5px;
+  font-size: 12px;
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(0,0,0,0.2);
+  }
+`
 
 const AcceptsLi = ({ data, onAddClick }) => {
   const onAdd = (event) => {
     onAddClick(event, data);
   }
   return (
-    <li
+    <AcceptsUlli
       onClick={onAdd}
     >
       {data.label}
-    </li>
+    </AcceptsUlli>
   )
 }
 

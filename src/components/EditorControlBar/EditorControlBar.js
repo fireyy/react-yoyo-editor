@@ -84,11 +84,6 @@ class ControlBar extends Component {
     canRemove: true
   };
 
-  onInspect = event => {
-    this.preventFocusLoss(event);
-    this.props.onInspect();
-  };
-
   onDragStart = event => {
     event.preventDefault();
     this.props.onDragStart();
@@ -127,22 +122,14 @@ class ControlBar extends Component {
         <ControlPlaceholder onMouseOver={this.onControlMouseOver}>
           {canGoUp &&
             <ControlButton
-              roundedRight={true}
+              roundedRight={canAdd}
               onMouseDown={onUp}
               key="upAction"
             >
               <MdArrowUpward {...iconProps} /> {parentLabel}
             </ControlButton>}
-          <ControlButton
-            roundedLeft={canGoUp}
-            roundedRight={canAdd}
-            onMouseDown={this.onInspect}
-            key="inspectAction"
-          >
-            <MdSettings {...iconProps} /> {label}
-          </ControlButton>
           {canAdd && <ControlButton
-            roundedLeft={true}
+            roundedLeft={canGoUp}
             onMouseDown={this.onShowAdd}
             key="addAction"
           >

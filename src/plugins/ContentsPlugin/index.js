@@ -14,6 +14,8 @@ export default function createContentsPlugin(yoyo, target) {
         <ToolbarDraggableItem
           key={component._yoyo.label}
           draggable={false}
+          data={component._yoyo}
+          onAdd={target.onAdd}
           onDragStart={() => {}}
           onDragEnd={() => {}}
         >

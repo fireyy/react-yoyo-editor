@@ -19,9 +19,22 @@ const ToolbarDraggableItem = styled.div`
 `;
 
 export default class myComponent extends Component {
+  constructor() {
+    super()
+    this.handleClick = this.handleClick.bind(this)
+  }
+  handleClick() {
+    let {
+      onAdd,
+      data
+    } = this.props;
+
+    onAdd(data);
+  }
   render() {
     return (
       <ToolbarDraggableItem
+        onClick={this.handleClick}
         draggable={this.props.draggable}
         onDragStart={this.props.onDragStart}
         onDragEnd={this.props.onDragEnd}

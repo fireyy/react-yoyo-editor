@@ -55,7 +55,8 @@ export default function createEnhancer(yoyo) {
           _yoyoHasPointerOver: false,
           _yoyoIsBeingDragged: false,
           _yoyoIsBeingInspected: false,
-          _yoyoAcceptIsVisible: false
+          _yoyoAcceptIsVisible: false,
+          _yoyoCurrentKey: null
         };
 
         // Pass down `editorState` prop as context on mount
@@ -88,8 +89,8 @@ export default function createEnhancer(yoyo) {
 
         // Set state if current component being inspected
         this.setState({
-          _yoyoIsBeingInspected: nextContext.yoyo.target === this
-        });
+          _yoyoCurrentKey: nextContext.yoyo.target
+        })
       }
 
       componentDidUpdate(prevProps, prevState, prevContext) {
@@ -168,7 +169,7 @@ export default function createEnhancer(yoyo) {
 
         const isNotRoot = !this.state._yoyoIsRoot;
         const acceptVisible = this.state._yoyoAcceptIsVisible;
-        const isVisible =
+        let isVisible =
           !this.context.yoyo.dragAndDrop &&
           (this.state._yoyoHasFocus || this.state._yoyoHasPointerOver);
 
@@ -185,7 +186,6 @@ export default function createEnhancer(yoyo) {
             canDrag={isNotRoot}
             canRemove={isNotRoot}
             onUp={this.onParentFocus}
-            onInspect={this.onInspect}
             onAdd={this.onAdd}
             onShowAdd={this.onShowAdd}
             onRemove={this.onRemove}
@@ -216,8 +216,8 @@ export default function createEnhancer(yoyo) {
         }
       };
 
-      onInspect = () => {
-        this.context.yoyo.onInspect(this);
+      onInspect = (key) => {
+        this.context.yoyo.onInspect(key);
       };
 
       onDragStart = () => {
@@ -306,7 +306,7 @@ export default function createEnhancer(yoyo) {
 
       onFocus = event => {
         event.stopPropagation();
-        this.setState({ _yoyoHasFocus: true });
+        this.setState({ _yoyoHasFocus: true, _yoyoIsBeingInspected: true });
 
         if (this.props.onFocus) {
           this.props.onFocus();
@@ -379,6 +379,7 @@ export default function createEnhancer(yoyo) {
             (this.props.children && this.props.children.length > 0);
           const addHoverStyles = !isDragAndDropActive && hasPointerOver;
           const extendedProps = { ...renderedElement.props };
+          const isInspected = this.state._yoyoCurrentKey === this.props.yoyoKey;
 
           Object.assign(extendedProps, {
             "aria-label": yoyo.label,
@@ -399,7 +400,8 @@ export default function createEnhancer(yoyo) {
             ...styles.active,
             ...(addHoverStyles && styles.hover),
             ...(hasFocus && styles.focus),
-            ...(isBeingDragged && styles.drag)
+            ...(isBeingDragged && styles.drag),
+            ...(isInspected && styles.inspect)
           });
 
           // Bind common events

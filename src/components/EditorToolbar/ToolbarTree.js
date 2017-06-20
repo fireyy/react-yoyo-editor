@@ -7,10 +7,6 @@ const TreeViewDiv = styled.div`
   font-size: 12px;
 `;
 
-const TreeViewItem = styled.div`
-  
-`;
-
 const TreeViewArrow = styled.div`
   cursor: pointer;
   margin-right: 6px;
@@ -24,6 +20,20 @@ const TreeViewChildren = styled.div`
   ${props => (props.collapsed) && 'height: 0;'};
 `;
 
+const TreeViewItem = ({ children, refKey, onItemClick }) => {
+  const handleOver = (event) => {
+    onItemClick(event, refKey)
+  }
+  const handleOut = (event) => {
+    onItemClick(event, null)
+  }
+  return (
+    <div onMouseOver={handleOver} onMouseOut={handleOut}>
+      {children}
+    </div>
+  )
+}
+
 class TreeView extends Component {
   constructor(props) {
     super(props);
@@ -33,6 +43,13 @@ class TreeView extends Component {
   }
 
   handleClick = (...args) => {
+    //
+    if (this.props.onClick) {
+      this.props.onClick(...args);
+    }
+  };
+
+  handleArrowClick = (...args) => {
     this.setState({ collapsed: !this.state.collapsed });
     if (this.props.onClick) {
       this.props.onClick(...args);
@@ -50,9 +67,9 @@ class TreeView extends Component {
 
     return (
       <TreeViewDiv>
-        <TreeViewItem>
+        <TreeViewItem refKey={this.props.refKey} onItemClick={this.handleClick}>
           {children &&
-            <TreeViewArrow {...rest} collapsed={collapsed} onClick={this.handleClick}>
+            <TreeViewArrow {...rest} collapsed={collapsed} onClick={this.handleArrowClick}>
               ▾
             </TreeViewArrow>}
           {nodeLabel}

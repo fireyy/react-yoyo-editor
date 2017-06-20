@@ -6,10 +6,16 @@ export default function createTreesPlugin(yoyo, target) {
   if (!yoyo.accepts || yoyo.accepts.length === 0) {
     return null;
   }
+  const treeItemClick = (event, key) => {
+    console.log("treeItemClick", key)
+    target.onInspect(key)
+  }
   let renderTree = trees => {
     return trees.map((child, i) => (
       <TreeView
         key={child.key}
+        refKey={child.key}
+        onClick={treeItemClick}
         nodeLabel={child.type._yoyo.label}
         defaultCollapsed={false}
       >
