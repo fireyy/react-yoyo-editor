@@ -11,7 +11,7 @@ const ControlBarColumn = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: ${props => mappings[props.aligner]};
-  ${props => ((props.aligner !== "center") && ((props.aligner === "left") ? 'margin-left: -16px;' : 'margin-right: -16px;'))};
+  ${props => ((props.aligner !== "center") && ((props.aligner === "left") ? 'margin-left: -4px' : 'margin-right: -6px'))};
   flex: 1;
 `;
 

@@ -29,7 +29,7 @@ export default function createWrapper(yoyo) {
         if (node) {
           this.setState({ hasNodeRef: true });
           if (node.props.isNew === true) {
-            node._yoyoFocus();
+            node.setFocusedKey(node.props.yoyoKey);
           }
           this._node = node;
         }

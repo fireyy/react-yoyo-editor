@@ -54,9 +54,9 @@ export default function createEnhancer(yoyo) {
           _yoyoHasFocus: false,
           _yoyoHasPointerOver: false,
           _yoyoIsBeingDragged: false,
-          _yoyoIsBeingInspected: false,
+          _yoyoIsBeingSetting: false,
           _yoyoAcceptIsVisible: false,
-          _yoyoCurrentKey: null
+          _yoyoInspectedKey: null
         };
 
         // Pass down `editorState` prop as context on mount
@@ -89,8 +89,14 @@ export default function createEnhancer(yoyo) {
 
         // Set state if current component being inspected
         this.setState({
-          _yoyoCurrentKey: nextContext.yoyo.target
-        })
+          _yoyoInspectedKey: nextContext.yoyo.inspect,
+          _yoyoIsBeingSetting: nextContext.yoyo.setting === this.props.yoyoKey
+        });
+
+        // Focus current component
+        if (nextContext.yoyo.current && nextContext.yoyo.current === this.props.yoyoKey) {
+          this.setFocus()
+        }
       }
 
       componentDidUpdate(prevProps, prevState, prevContext) {
@@ -186,6 +192,7 @@ export default function createEnhancer(yoyo) {
             canDrag={isNotRoot}
             canRemove={isNotRoot}
             onUp={this.onParentFocus}
+            onSetting={this.onSetting}
             onAdd={this.onAdd}
             onShowAdd={this.onShowAdd}
             onRemove={this.onRemove}
@@ -196,7 +203,7 @@ export default function createEnhancer(yoyo) {
       }
 
       renderToolbar() {
-        if (!this.state._yoyoIsBeingInspected) {
+        if (!this.state._yoyoIsBeingSetting) {
           return;
         }
 
@@ -218,6 +225,23 @@ export default function createEnhancer(yoyo) {
 
       onInspect = (key) => {
         this.context.yoyo.onInspect(key);
+      };
+
+      onSetting = () => {
+        this.context.yoyo.onSetting(this.props.yoyoKey);
+      };
+
+      setFocus = () => {
+        this.onInspect(null);
+        this.setFocusedKey(null);
+        setTimeout(() => {
+          this._yoyoFocus();
+          this.onFocus();
+        }, 0)
+      };
+
+      setFocusedKey = (key) => {
+        this.context.yoyo.setFocusedKey(key);
       };
 
       onDragStart = () => {
@@ -299,14 +323,13 @@ export default function createEnhancer(yoyo) {
       onPointerOut = event => {
         event.stopPropagation();
         this.setState({
-          _yoyoHasPointerOver: false,
-          _yoyoAcceptIsVisible: false
+          _yoyoHasPointerOver: false
         });
       };
 
       onFocus = event => {
-        event.stopPropagation();
-        this.setState({ _yoyoHasFocus: true, _yoyoIsBeingInspected: true });
+        event && event.stopPropagation();
+        this.setState({ _yoyoHasFocus: true });
 
         if (this.props.onFocus) {
           this.props.onFocus();
@@ -379,7 +402,7 @@ export default function createEnhancer(yoyo) {
             (this.props.children && this.props.children.length > 0);
           const addHoverStyles = !isDragAndDropActive && hasPointerOver;
           const extendedProps = { ...renderedElement.props };
-          const isInspected = this.state._yoyoCurrentKey === this.props.yoyoKey;
+          const isInspected = this.state._yoyoInspectedKey === this.props.yoyoKey;
 
           Object.assign(extendedProps, {
             "aria-label": yoyo.label,

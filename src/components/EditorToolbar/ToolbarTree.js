@@ -20,15 +20,18 @@ const TreeViewChildren = styled.div`
   ${props => (props.collapsed) && 'height: 0;'};
 `;
 
-const TreeViewItem = ({ children, refKey, onItemClick }) => {
-  const handleOver = (event) => {
+const TreeViewItem = ({ children, refKey, onItemHover, onItemClick }) => {
+  const handleClick = (event) => {
     onItemClick(event, refKey)
   }
+  const handleOver = (event) => {
+    onItemHover(event, refKey)
+  }
   const handleOut = (event) => {
-    onItemClick(event, null)
+    onItemHover(event, null)
   }
   return (
-    <div onMouseOver={handleOver} onMouseOut={handleOut}>
+    <div onClick={handleClick} onMouseOver={handleOver} onMouseOut={handleOut}>
       {children}
     </div>
   )
@@ -43,9 +46,14 @@ class TreeView extends Component {
   }
 
   handleClick = (...args) => {
-    //
-    if (this.props.onClick) {
-      this.props.onClick(...args);
+    if (this.props.onItemClick) {
+      this.props.onItemClick(...args);
+    }
+  };
+
+  handleOver = (...args) => {
+    if (this.props.onItemHover) {
+      this.props.onItemHover(...args);
     }
   };
 
@@ -67,7 +75,7 @@ class TreeView extends Component {
 
     return (
       <TreeViewDiv>
-        <TreeViewItem refKey={this.props.refKey} onItemClick={this.handleClick}>
+        <TreeViewItem refKey={this.props.refKey} onItemClick={this.handleClick} onItemHover={this.handleOver}>
           {children &&
             <TreeViewArrow {...rest} collapsed={collapsed} onClick={this.handleArrowClick}>
               ▾

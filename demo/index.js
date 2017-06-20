@@ -13,7 +13,9 @@ class Editor extends Component {
     this.state = {
       enabled: true,
       tree: initialTree,
-      target: null
+      setting: null,
+      current: null,
+      inspect: null
     };
   }
 
@@ -25,8 +27,16 @@ class Editor extends Component {
     this.setState({ tree });
   };
 
-  onInspect = target => {
-    this.setState({ target });
+  onInspect = inspect => {
+    this.setState({ inspect });
+  };
+
+  onSetting = setting => {
+    this.setState({ setting })
+  };
+
+  setFocusedKey = current => {
+    this.setState({ current });
   };
 
   render() {
@@ -36,9 +46,13 @@ class Editor extends Component {
         <YoYoEditor
           onChange={this.onChange}
           onInspect={this.onInspect}
+          onSetting={this.onSetting}
+          setFocusedKey={this.setFocusedKey}
           components={editorComponents}
           enabled={this.state.enabled}
-          target={this.state.target}
+          inspect={this.state.inspect}
+          current={this.state.current}
+          setting={this.state.setting}
           tree={this.state.tree}
         />
       </main>

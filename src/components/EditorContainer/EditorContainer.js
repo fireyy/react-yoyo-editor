@@ -36,18 +36,26 @@ class EditorContainer extends Component {
       enabled,
       tree,
       components,
-      target,
+      inspect,
+      current,
+      setting,
       onChange,
-      onInspect
+      onInspect,
+      setFocusedKey,
+      onSetting
     } = this.props;
     const renderedElement = deserialize(tree, components);
     const extraProps = {
       editorState: createFromObject({
         enabled,
         tree,
-        target,
+        inspect,
+        current,
+        setting,
         onChange,
-        onInspect
+        onInspect,
+        setFocusedKey,
+        onSetting
       })
     };
 

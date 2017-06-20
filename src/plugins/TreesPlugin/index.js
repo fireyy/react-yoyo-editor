@@ -7,7 +7,9 @@ export default function createTreesPlugin(yoyo, target) {
     return null;
   }
   const treeItemClick = (event, key) => {
-    console.log("treeItemClick", key)
+    target.setFocusedKey(key)
+  }
+  const treeItemOver = (event, key) => {
     target.onInspect(key)
   }
   let renderTree = trees => {
@@ -15,7 +17,8 @@ export default function createTreesPlugin(yoyo, target) {
       <TreeView
         key={child.key}
         refKey={child.key}
-        onClick={treeItemClick}
+        onItemClick={treeItemClick}
+        onItemHover={treeItemOver}
         nodeLabel={child.type._yoyo.label}
         defaultCollapsed={false}
       >

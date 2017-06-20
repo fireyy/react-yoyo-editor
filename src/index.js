@@ -3,7 +3,7 @@ import EditorSwitcher from "components/EditorSwitcher";
 import EditorTextbox from "components/EditorToolbar/ToolbarTextbox";
 import EditorSelectbox from "components/EditorToolbar/ToolbarSelectbox";
 import createPropsPlugin from "plugins/PropsPlugin";
-import createContentsPlugin from "plugins/ContentsPlugin";
+import createTreesPlugin from "plugins/TreesPlugin";
 import configDefaults from "constants/ConfigDefaults";
 import createEnhancer from "./enhancer";
 import createWrapper from "./wrapper";
@@ -14,7 +14,7 @@ export const YoYoTextbox = EditorTextbox;
 export const YoYoSelectbox = EditorSelectbox;
 export const plugins = {
   createPropsPlugin,
-  createContentsPlugin
+  createTreesPlugin
 };
 
 export default function withYoYo(yoyo) {

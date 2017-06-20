@@ -253,11 +253,15 @@ export function moveNodeAtPath(
  * Create new Node
  */
 function createNewNode(data) {
+  const style = {};
+  Object.keys(data.props.style).forEach((key) => {
+    style[key] = null
+  });
   return {
     type: data.name,
     props: {
       isNew: true,
-      style: data.props.style,
+      style: style,
       children: ""
     }
   }

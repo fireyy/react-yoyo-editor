@@ -1,14 +1,10 @@
 import StyleConstants from "constants/StyleConstants";
 import theme from "themes/index";
 
-const isSafari =
-  navigator.userAgent.toLowerCase().indexOf("safari") > -1 &&
-  navigator.userAgent.toLowerCase().indexOf("chrome") === -1;
-
 const highlightStyles = {
   transition: "outline 200ms ease",
-  outline: `${theme.border.width}px dashed ${theme.colors.primaryLight}`,
-  outlineOffset: isSafari ? 0 : 4, // Safari has rendering issues with outline-offset
+  outline: `${theme.border.width}px solid ${theme.colors.primary}`,
+  outlineOffset: 4,
   zIndex: 999
 };
 

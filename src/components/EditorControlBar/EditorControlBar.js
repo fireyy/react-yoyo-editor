@@ -16,7 +16,7 @@ import {
 
 const iconProps = {
   size: 14,
-  color: theme.colors.primary,
+  color: theme.colors.text,
   style: {
     verticalAlign: "text-top"
   }
@@ -29,8 +29,8 @@ const ControlBarWrapper = styled.div`
   pointer-events: none;
   position: absolute;
   user-select: none;
-  margin-top: -32px;
-  height: 32px;
+  margin-top: -26px;
+  height: 22px;
   opacity: ${props => props.visible ? 1 : 0};
   ${props => props.visible && 'z-index: 9999;'};
 `;
@@ -42,31 +42,25 @@ const ControlBarInner = styled.div`
   position: relative;
   height: inherit;
   width: inherit;
-  bottom: -10px;
+  bottom: 0;
 `;
 
 const ControlButton = styled.button`
   transition: background-color 200ms ease, box-shadow 200ms ease;
-  color: ${theme.colors.primary};
+  color: ${theme.colors.text};
   white-space: nowrap;
   font-size: 11px;
   text-transform: uppercase;
   display: block;
   pointer-events: initial;
   border: 1px solid ${theme.colors.primary};
-  background-color: ${theme.colors.background};
+  background-color: ${theme.colors.primary};
   min-width: 22px;
   height: 22px;
   line-height: 1;
   box-sizing: border-box;
-  border-radius: 2px;
   margin: 0;
   cursor: pointer;
-  ${props => (props.roundedLeft) && 'border-left-width: 0; border-radius: 0 2px 2px 0;'};
-  ${props => (props.roundedRight) && 'border-right-width: 0; border-radius: 2px 0 0 2px;'};
-  &:hover {
-    background-color: ${theme.colors.backgroundHover};
-  }
 `;
 
 const DragButton = styled(ControlButton)`
@@ -82,6 +76,11 @@ class ControlBar extends Component {
     acceptVisible: false,
     canDrag: true,
     canRemove: true
+  };
+
+  onSetting = event => {
+    this.preventFocusLoss(event);
+    this.props.onSetting();
   };
 
   onDragStart = event => {
@@ -122,14 +121,18 @@ class ControlBar extends Component {
         <ControlPlaceholder onMouseOver={this.onControlMouseOver}>
           {canGoUp &&
             <ControlButton
-              roundedRight={canAdd}
               onMouseDown={onUp}
               key="upAction"
             >
               <MdArrowUpward {...iconProps} /> {parentLabel}
             </ControlButton>}
+          <ControlButton
+              onMouseDown={this.onSetting}
+              key="settingAction"
+            >
+              <MdSettings {...iconProps} /> {label}
+            </ControlButton>
           {canAdd && <ControlButton
-            roundedLeft={canGoUp}
             onMouseDown={this.onShowAdd}
             key="addAction"
           >
