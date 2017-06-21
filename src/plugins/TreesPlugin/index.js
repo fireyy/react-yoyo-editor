@@ -30,7 +30,7 @@ export default function createTreesPlugin(yoyo, target) {
   let trees = renderTree(target.props.children);
 
   return (
-    <ToolbarSection key="trees-plugin" label={`${yoyo.label} 子元素`}>
+    <ToolbarSection key="trees-plugin" flex="1" label={`${yoyo.label} 子元素`}>
       {trees}
     </ToolbarSection>
   );

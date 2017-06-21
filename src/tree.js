@@ -272,10 +272,10 @@ function createNewNode(data) {
  */
 export function addChildToPath(tree, key, component) {
   const node = getNode(tree, key);
-  if (Array.isArray(node.props.children)) {
-    const child = createNewNode(component);
-    node.props.children.push(child);
-  }
+
+  // Make sure node.props.children is array
+  node.props.children = [].concat(node.props.children || []);
+  node.props.children.push(createNewNode(component));
   const targetPath = getNodePath(tree, key);
   return updateNodeAtPath(tree, targetPath, node);
 }
