@@ -1,10 +1,18 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled from 'styled-components';
+import theme from "themes/index";
 
 const TreeViewDiv = styled.div`
   overflow-y: hidden;
   font-size: 12px;
+`;
+
+const TreeViewItem = styled.div`
+  padding: 3px;
+  &:hover {
+    background-color: ${theme.colors.backgroundHover}
+  }
 `;
 
 const TreeViewArrow = styled.div`
@@ -19,23 +27,6 @@ const TreeViewChildren = styled.div`
   margin-left: 16px;
   ${props => (props.collapsed) && 'height: 0;'};
 `;
-
-const TreeViewItem = ({ children, refKey, onItemHover, onItemClick }) => {
-  const handleClick = (event) => {
-    onItemClick(event, refKey)
-  }
-  const handleOver = (event) => {
-    onItemHover(event, refKey)
-  }
-  const handleOut = (event) => {
-    onItemHover(event, null)
-  }
-  return (
-    <div onClick={handleClick} onMouseOver={handleOver} onMouseOut={handleOut}>
-      {children}
-    </div>
-  )
-}
 
 class TreeView extends Component {
   constructor(props) {
@@ -70,12 +61,16 @@ class TreeView extends Component {
       nodeLabel,
       children,
       defaultCollapsed,
+      refKey,
       ...rest
     } = this.props;
 
     return (
       <TreeViewDiv>
-        <TreeViewItem refKey={this.props.refKey} onItemClick={this.handleClick} onItemHover={this.handleOver}>
+        <TreeViewItem
+          onClick={(event)=>this.handleClick(event, refKey)} onMouseOver={(event)=>this.handleOver(event, refKey)}
+          onMouseOut={(event)=>this.handleOver(event, null)}
+        >
           {children &&
             <TreeViewArrow {...rest} collapsed={collapsed} onClick={this.handleArrowClick}>
               ▾

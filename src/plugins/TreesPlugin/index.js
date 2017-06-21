@@ -1,6 +1,6 @@
 import React from "react";
 import ToolbarSection from "components/EditorToolbar/ToolbarSection";
-import TreeView from "components/EditorToolbar/ToolbarTree";
+import TreeView from "components/TreeView";
 
 export default function createTreesPlugin(yoyo, target) {
   if (!yoyo.accepts || yoyo.accepts.length === 0) {

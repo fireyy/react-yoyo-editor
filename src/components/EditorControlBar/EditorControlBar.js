@@ -157,7 +157,10 @@ class ControlBar extends Component {
                 <AcceptsUl>
                   {this.props.yoyoObj.accepts.map(item=>{
                     return (
-                      <li onClick={(event) => this.onAdd(event, item._yoyo)}>{item._yoyo.label}</li>
+                      <li
+                        key={item._yoyo.label}
+                        onClick={(event) => this.onAdd(event, item._yoyo)}
+                      >{item._yoyo.label}</li>
                     )
                   })}
                 </AcceptsUl>
