@@ -21,17 +21,24 @@ const EditorPlaceholderHr = styled.hr`
   margin: 0;
   line-height: 0;
   height: ${theme.border.width}px;
-`;
-
-const EditorPlaceholderArrow = styled.span`
-  border: ${theme.border.arrowSize}px solid rgba(66, 129, 244, 0);
-  position: absolute;
-  margin-top: ${-1 * theme.border.arrowSize}px;
-  top: 50%;
-  content: "";
-  height: 0;
-  width: 0;
-  ${props => (props.border === "left") ? "border-left-color: " + theme.colors.primary + "; left: -10px;" : "border-right-color: " + theme.colors.primary + "; right: -10px;"};
+  &::before, &::after {
+    content: '';
+    border: ${theme.border.arrowSize}px solid rgba(66, 129, 244, 0);
+    position: absolute;
+    margin-top: ${-1 * theme.border.arrowSize}px;
+    top: 50%;
+    content: "";
+    height: 0;
+    width: 0;
+  }
+  &::before {
+    border-right-color: ${theme.colors.primary};
+    right: -10px;
+  }
+  &::after {
+    border-left-color: ${theme.colors.primary};
+    left: -10px;
+  }
 `;
 
 class EditorPlaceholder extends Component {
@@ -44,9 +51,7 @@ class EditorPlaceholder extends Component {
 
     return (
       <EditorPlaceholderWrapper style={positionAndSize}>
-        <EditorPlaceholderArrow border="left" />
         <EditorPlaceholderHr />
-        <EditorPlaceholderArrow border="right" />
       </EditorPlaceholderWrapper>
     );
   }
