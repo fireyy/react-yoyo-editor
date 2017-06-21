@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { getElementBox } from "utils/ElementBoxUtils";
 import ControlBarColumn from "./ControlBarColumn";
 import ControlPlaceholder from "./ControlPlaceholder";
-import AcceptsItems from "./AcceptsItems";
+import Dropdown, { DropdownTrigger, DropdownContent } from '../Dropdown';
 import theme from "themes/index";
 import {
   MdAdd,
@@ -53,20 +53,39 @@ const ControlButton = styled.button`
   text-transform: uppercase;
   display: block;
   pointer-events: initial;
-  border: 1px solid ${theme.colors.primary};
+  border: none;
   background-color: ${theme.colors.primary};
   min-width: 22px;
   height: 22px;
   line-height: 1;
-  box-sizing: border-box;
   margin: 0;
   cursor: pointer;
+`;
+
+const AddButton = styled(ControlButton)`
+  padding: 0;
+  min-width: 60px;
 `;
 
 const DragButton = styled(ControlButton)`
   cursor: -webkit-grab;
   width: 60px;
   text-align: center;
+`;
+
+const AcceptsUl = styled.ul`
+  border: 1px solid ${theme.colors.primary};
+  background-color: ${theme.colors.primary};
+  color: ${theme.colors.text};
+  pointer-events: initial;
+  margin: 0;
+  padding: 5px 0 0 0;
+  box-sizing: border-box;
+  list-style: none;
+  user-select: none;
+  > li {
+    padding: 5px;
+  }
 `;
 
 
@@ -89,13 +108,8 @@ class ControlBar extends Component {
   };
 
   onAdd = (event, component) => {
-    this.preventFocusLoss(event);
+    this.refs.dropdown.hide();
     this.props.onAdd(component);
-  };
-
-  onShowAdd = event => {
-    this.preventFocusLoss(event);
-    this.props.onShowAdd();
   };
 
   onRemove = event => {
@@ -113,7 +127,7 @@ class ControlBar extends Component {
   };
 
   renderLeftControls() {
-    const { canGoUp, onUp, label, parentLabel, acceptVisible } = this.props;
+    const { canGoUp, onUp, label, parentLabel } = this.props;
     const canAdd = this.props.yoyoObj.accepts.length > 0;
 
     return (
@@ -132,13 +146,24 @@ class ControlBar extends Component {
             >
               <MdSettings {...iconProps} /> {label}
             </ControlButton>
-          {canAdd && <ControlButton
-            onMouseDown={this.onShowAdd}
+          {canAdd && <AddButton
             key="addAction"
           >
-            <MdAdd {...iconProps} /> 添加
-          </ControlButton>}
-          {canAdd && <AcceptsItems visible={acceptVisible} data={this.props.yoyoObj.accepts} onAddClick={this.onAdd}></AcceptsItems>}
+            <Dropdown ref="dropdown" onMouseDown={this.preventFocusLoss}>
+              <DropdownTrigger>
+                <MdAdd {...iconProps} /> 添加
+              </DropdownTrigger>
+              <DropdownContent>
+                <AcceptsUl>
+                  {this.props.yoyoObj.accepts.map(item=>{
+                    return (
+                      <li onClick={(event) => this.onAdd(event, item._yoyo)}>{item._yoyo.label}</li>
+                    )
+                  })}
+                </AcceptsUl>
+              </DropdownContent>
+            </Dropdown>
+          </AddButton>}
         </ControlPlaceholder>
       </ControlBarColumn>
     );

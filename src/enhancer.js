@@ -55,7 +55,6 @@ export default function createEnhancer(yoyo) {
           _yoyoHasPointerOver: false,
           _yoyoIsBeingDragged: false,
           _yoyoIsBeingSetting: false,
-          _yoyoAcceptIsVisible: false,
           _yoyoInspectedKey: null
         };
 
@@ -174,7 +173,6 @@ export default function createEnhancer(yoyo) {
         }
 
         const isNotRoot = !this.state._yoyoIsRoot;
-        const acceptVisible = this.state._yoyoAcceptIsVisible;
         let isVisible =
           !this.context.yoyo.dragAndDrop &&
           (this.state._yoyoHasFocus || this.state._yoyoHasPointerOver);
@@ -187,14 +185,12 @@ export default function createEnhancer(yoyo) {
             yoyoObj={yoyo}
             targetRef={this._childrenRef}
             visible={isVisible}
-            acceptVisible={acceptVisible}
             canGoUp={isNotRoot}
             canDrag={isNotRoot}
             canRemove={isNotRoot}
             onUp={this.onParentFocus}
             onSetting={this.onSetting}
             onAdd={this.onAdd}
-            onShowAdd={this.onShowAdd}
             onRemove={this.onRemove}
             onDragStart={this.onDragStart}
           />,
@@ -286,17 +282,10 @@ export default function createEnhancer(yoyo) {
       };
 
       onAdd = (component) => {
-        this.setState({ _yoyoAcceptIsVisible: false });
         const { tree, onChange } = this.context.yoyo;
         const { yoyoKey } = this.props;
 
         onChange(addChildToPath(tree, yoyoKey, component));
-      };
-
-      onShowAdd = (bool) => {
-        const _yoyoAcceptIsVisible = bool === undefined ? !this.state._yoyoAcceptIsVisible : bool;
-
-        this.setState({ _yoyoAcceptIsVisible: _yoyoAcceptIsVisible });
       };
 
       onRemove = () => {

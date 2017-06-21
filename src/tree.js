@@ -254,7 +254,7 @@ export function moveNodeAtPath(
  */
 function createNewNode(data) {
   const style = {};
-  Object.keys(data.props.style).forEach((key) => {
+  data.props.style && Object.keys(data.props.style).forEach((key) => {
     style[key] = null
   });
   return {

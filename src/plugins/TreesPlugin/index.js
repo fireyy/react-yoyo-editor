@@ -13,7 +13,7 @@ export default function createTreesPlugin(yoyo, target) {
     target.onInspect(key)
   }
   let renderTree = trees => {
-    return trees.map((child, i) => (
+    return Array.isArray(trees) && trees.map((child, i) => (
       <TreeView
         key={child.key}
         refKey={child.key}
