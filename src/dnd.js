@@ -1,4 +1,4 @@
-import { getElementBox } from "utils/ElementBoxUtils";
+import { getElementBox } from "./utils/ElementBoxUtils";
 import { renderPlaceholder, destroyPlaceholder } from "./placeholder";
 import { getNodePath, moveNodeAtPath, getNodeIndex } from "./tree";
 

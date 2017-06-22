@@ -6,6 +6,7 @@ const ToolbarSectionDiv = styled.div`
   font-family: "sans-serif";
   background-color: ${theme.colors.primary};
   padding-bottom: 2px;
+  user-select: none;
   width: 100%;
   ${props => props.flex && css`
     align-items: start;

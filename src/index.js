@@ -1,10 +1,10 @@
-import EditorContainer from "components/EditorContainer";
-import EditorSwitcher from "components/EditorSwitcher";
-import EditorTextbox from "components/EditorToolbar/ToolbarTextbox";
-import EditorSelectbox from "components/EditorToolbar/ToolbarSelectbox";
-import createPropsPlugin from "plugins/PropsPlugin";
-import createTreesPlugin from "plugins/TreesPlugin";
-import configDefaults from "constants/ConfigDefaults";
+import EditorContainer from "./components/EditorContainer";
+import EditorSwitcher from "./components/EditorSwitcher";
+import EditorTextbox from "./components/EditorToolbar/ToolbarTextbox";
+import EditorSelectbox from "./components/EditorToolbar/ToolbarSelectbox";
+import createPropsPlugin from "./plugins/PropsPlugin";
+import createTreesPlugin from "./plugins/TreesPlugin";
+import configDefaults from "./constants/ConfigDefaults";
 import createEnhancer from "./enhancer";
 import createWrapper from "./wrapper";
 

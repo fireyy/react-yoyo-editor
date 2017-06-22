@@ -8,6 +8,16 @@ export function buildGlobalStyles() {
           content: attr(placeholder);
           display: block;
         }
+        @keyframes scaleIn {
+          0% {
+            opacity: 0;
+            transform: scaleY(0)
+          }
+
+          100% {
+            transform: scaleY(1)
+          }
+        }
         @keyframes ${StyleConstants.PULSE_ANIMATION_NAME} {
           0% { opacity: 1 }
           50% { opacity: .2; }
