@@ -18,6 +18,18 @@ export function buildGlobalStyles() {
             transform: scaleY(1)
           }
         }
+        .inspected {
+          position: relative;
+        }
+        .inspected::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background-color: rgba(56, 121, 217, 0.2);
+        }
         @keyframes ${StyleConstants.PULSE_ANIMATION_NAME} {
           0% { opacity: 1 }
           50% { opacity: .2; }

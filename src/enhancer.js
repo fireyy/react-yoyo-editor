@@ -407,13 +407,15 @@ export default function createEnhancer(yoyo) {
             }
           });
 
+          // Set additional className
+          extendedProps.className +=  isInspected ? ' inspected' : '';
+
           // Set additional styles
           Object.assign(extendedProps.style, {
             ...styles.active,
             ...(addHoverStyles && styles.hover),
             ...(hasFocus && styles.focus),
-            ...(isBeingDragged && styles.drag),
-            ...(isInspected && styles.inspect)
+            ...(isBeingDragged && styles.drag)
           });
 
           // Bind common events

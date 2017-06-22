@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import styled from 'styled-components';
 
 const EditorToolbar = styled.div`
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.075);
   cursor: default;
   box-sizing: border-box;
   position: fixed;
