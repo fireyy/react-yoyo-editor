@@ -54,10 +54,10 @@ const ControlButton = styled.button`
   display: block;
   pointer-events: initial;
   border: none;
-  background-color: ${theme.colors.primary};
+  background-color: ${theme.colors.primaryLight};
   min-width: 22px;
   height: 22px;
-  line-height: 1;
+  line-height: 22px;
   margin: 0;
   cursor: pointer;
 `;
@@ -74,17 +74,19 @@ const DragButton = styled(ControlButton)`
 `;
 
 const AcceptsUl = styled.ul`
-  border: 1px solid ${theme.colors.primary};
-  background-color: ${theme.colors.primary};
+  background-color: ${theme.colors.primaryLight};
   color: ${theme.colors.text};
   pointer-events: initial;
   margin: 0;
-  padding: 5px 0 0 0;
+  padding: 0;
   box-sizing: border-box;
   list-style: none;
   user-select: none;
   > li {
-    padding: 5px;
+    padding: 0 5px;
+    &:hover {
+      background-color: ${theme.colors.primary};
+    }
   }
 `;
 

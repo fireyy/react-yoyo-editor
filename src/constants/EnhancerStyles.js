@@ -3,7 +3,7 @@ import theme from "themes/index";
 
 const highlightStyles = {
   transition: "outline 200ms ease",
-  outline: `${theme.border.width}px solid ${theme.colors.primary}`,
+  outline: `${theme.border.width}px solid ${theme.colors.primaryLight}`,
   outlineOffset: 4,
   zIndex: 999
 };
